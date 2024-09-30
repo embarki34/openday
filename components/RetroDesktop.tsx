@@ -20,15 +20,14 @@ const RetroDesktop: React.FC<RetroDesktopProps> = ({ icons, onIconClick }) => {
           onClick={() => onIconClick(icon.name)}
           onDoubleClick={() => onIconClick(icon.name)}
         >
-         
-            <Image 
-              src={icon.icon} 
-              className="text-4xl text-[#000080]" 
-              width={icon.name === "Contact Us" ? 100 : 50} 
-              height={icon.name === "Contact Us" ? 100 : 50} 
-              alt={icon.name} 
-            />
-          
+          <Image 
+            src={icon.icon} 
+            className="text-4xl text-[#000080]" 
+            width={icon.name === "Contact Us" ? 100 : 50} 
+            height={icon.name === "Contact Us" ? 100 : 50} 
+            alt={icon.name}
+            style={{ width: 'auto', height: 'auto' }}
+          />
           <span className="text-white text-sm mt-1 text-center px-1 bg-[#000080]">{icon.name}</span>
         </div>
       ))}

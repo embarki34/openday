@@ -2,22 +2,25 @@ import React from 'react';
 import Image from 'next/image';
 
 interface RetroIconProps {
-  style?: React.CSSProperties;
+  name: string;
+  icon: string;
+  onClick: () => void;
 }
 
-const RetroIcon: React.FC<RetroIconProps> = ({ style }) => {
-  const icons = [
-    '/my-computer.png',
-    '/my-documents.png',
-    '/recycle_bin.png',
-    '/overlay_share-1.png',
-  ];
-
-  const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-
+const RetroIcon: React.FC<RetroIconProps> = ({ name, icon, onClick }) => {
   return (
-    <div className="absolute animate-float" style={style}>
-      <Image src={randomIcon} alt="Retro Icon" width={32} height={32} />
+    <div
+      className="flex flex-col items-center cursor-pointer hover:bg-white/10 p-2 rounded transition-colors duration-200"
+      onClick={onClick}
+    >
+      <Image 
+        src={icon} 
+        width={50} 
+        height={50} 
+        alt={name}
+        style={{ width: 'auto', height: 'auto' }}
+      />
+      <span className="text-white text-sm mt-1 text-center px-1 bg-[#000080]">{name}</span>
     </div>
   );
 };
