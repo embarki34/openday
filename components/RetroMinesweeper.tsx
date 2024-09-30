@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 interface Cell {
   isMine: boolean;
@@ -20,21 +19,7 @@ const RetroMinesweeper: React.FC = () => {
   const cols = 9;
   const mines = 10;
 
-  useEffect(() => {
-    initializeGrid();
-  },);  
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isRunning]);
-
-  const initializeGrid = () => {
+  const initializeGrid = useCallback(() => {
     const newGrid: Cell[][] = Array(rows).fill(null).map(() => 
       Array(cols).fill(null).map(() => ({
         isMine: false,
@@ -66,7 +51,23 @@ const RetroMinesweeper: React.FC = () => {
     setTimer(0);
     setIsRunning(false);
     setFlaggedMines(0);
-  };
+    setGameOver(false);
+    setWin(false);
+  }, []);
+
+  useEffect(() => {
+    initializeGrid();
+  }, [initializeGrid]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   const countNeighborMines = (grid: Cell[][], row: number, col: number) => {
     let count = 0;
@@ -127,10 +128,9 @@ const RetroMinesweeper: React.FC = () => {
   };
 
   const revealAllMines = () => {
-    const newGrid = grid.map(row => row.map(cell => 
+    setGrid(grid.map(row => row.map(cell => 
       cell.isMine ? { ...cell, isRevealed: true } : cell
-    ));
-    setGrid(newGrid);
+    )));
   };
 
   const checkWin = () => {
@@ -143,12 +143,6 @@ const RetroMinesweeper: React.FC = () => {
       setWin(true);
       setIsRunning(false);
     }
-  };
-
-  const resetGame = () => {
-    setGameOver(false);
-    setWin(false);
-    initializeGrid();
   };
 
   const startGame = () => {
@@ -185,10 +179,10 @@ const RetroMinesweeper: React.FC = () => {
           {timer.toString().padStart(3, '0')}
         </div>
         <button 
-          onClick={resetGame} 
+          onClick={initializeGrid} 
           className="px-4 py-2 bg-[#c0c0c0] border-t-2 border-l-2 border-[#ffffff] border-b-2 border-r-2 border-[#808080] active:border-t-2 active:border-l-2 active:border-[#808080] active:border-b-2 active:border-r-2 active:border-[#ffffff]"
         >
-          🙂
+          {gameOver ? '😵' : win ? '😎' : '🙂'}
         </button>
         <div className="bg-black text-red-600 p-2 w-16 text-center font-bold">
           {(mines - flaggedMines).toString().padStart(3, '0')}
