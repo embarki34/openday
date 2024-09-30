@@ -21,7 +21,7 @@ const RetroMinesweeper: React.FC = () => {
 
   useEffect(() => {
     initializeGrid();
-  }, []);
+  }, []);  // We'll address this warning later
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -34,7 +34,7 @@ const RetroMinesweeper: React.FC = () => {
   }, [isRunning]);
 
   const initializeGrid = () => {
-    let newGrid: Cell[][] = Array(rows).fill(null).map(() => 
+    const newGrid: Cell[][] = Array(rows).fill(null).map(() => 
       Array(cols).fill(null).map(() => ({
         isMine: false,
         isRevealed: false,
@@ -85,7 +85,7 @@ const RetroMinesweeper: React.FC = () => {
   const revealCell = (row: number, col: number) => {
     if (gameOver || win || grid[row][col].isRevealed || grid[row][col].isFlagged) return;
 
-    let newGrid = [...grid];
+    const newGrid = [...grid];
     if (newGrid[row][col].isMine) {
       setGameOver(true);
       revealAllMines();
@@ -119,14 +119,14 @@ const RetroMinesweeper: React.FC = () => {
 
   const toggleFlag = (row: number, col: number) => {
     if (gameOver || win || grid[row][col].isRevealed) return;
-    let newGrid = [...grid];
+    const newGrid = [...grid];
     newGrid[row][col].isFlagged = !newGrid[row][col].isFlagged;
     setGrid(newGrid);
     setFlaggedMines(prevFlagged => newGrid[row][col].isFlagged ? prevFlagged + 1 : prevFlagged - 1);
   };
 
   const revealAllMines = () => {
-    let newGrid = grid.map(row => row.map(cell => 
+    const newGrid = grid.map(row => row.map(cell => 
       cell.isMine ? { ...cell, isRevealed: true } : cell
     ));
     setGrid(newGrid);

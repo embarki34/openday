@@ -11,7 +11,6 @@ import RetroMinesweeper from "@/components/RetroMinesweeper";
 
 export default function Home() {
   const [openWindows, setOpenWindows] = useState<string[]>(["Open Day Announcement"]);
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState<{ x: number; y: number } | null>(null);
   const [isEventDay, setIsEventDay] = useState(false);
@@ -21,7 +20,6 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date();
-      setCurrentTime(now);
       const eventDate = new Date(2024, 9, 1, 10, 0, 0); // October 1, 2024, 10:00 AM
       setIsEventDay(now.getFullYear() === 2024 && now.getMonth() === 9 && now.getDate() === 1);
       
@@ -79,7 +77,8 @@ export default function Home() {
       className="bg-[#008080] min-h-screen font-[family-name:var(--font-ms-sans-serif)] relative overflow-hidden"
       onContextMenu={handleContextMenu}
       onClick={closeContextMenu}
-    >
+    > 
+    
       <svg className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 opacity-10" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 1080 1080" xmlSpace="preserve">
         <style type="text/css">
@@ -90,6 +89,9 @@ export default function Home() {
         c0,0,143.31,3.12,189.03-143.7c6.45-20.71,9.64-42.27,10.15-63.95c0.78-33.12,11.03-108.19,86.93-119.86L800,532.68l-143.05,128
         h-45.17c0,0-27.33,67.77-73.9,82.83h153.2L928,528.92L705.89,336.92z"/>
       </svg>
+      
+      
+      
       <RetroDesktop icons={desktopIcons} onIconClick={toggleWindow} />
       
       {openWindows.map(window => (
@@ -123,11 +125,16 @@ export default function Home() {
           {window === "Open Day Announcement" && (
             <p className="text-[#000080] text-2xl font-bold">
               {openDayMessage}
+              
             </p>
+            
           )}
           {window === "Minesweeper" && (
             <div className="w-[500px] h-[500px] overflow-auto">
               <RetroMinesweeper />
+              <div className="mt-4 text-black text-s">
+          Developed by <a href="https://portfolio-omar-embarkis-projects.vercel.app/" target="_blank" rel="noopener noreferrer" className="underline">Omar Embarki</a>
+        </div>
             </div>
           )}
         </RetroWindow>
@@ -160,6 +167,9 @@ export default function Home() {
           }}
         />
       )}
+          
+      
     </div>
+
   );
 }
