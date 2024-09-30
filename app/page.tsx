@@ -98,7 +98,7 @@ export default function Home() {
         <RetroWindow key={window} title={window} onClose={() => toggleWindow(window)}>
           {window === "About Us" && (
             <p className="text-[#00080]">
-              Infiniti Club was created by students for students in 2023 at the University of Bordj Bou Arréridj's IT Department (MI). Our goal? To inspire and unite future developers.
+              Infiniti Club was created by students for students in 2023 at the University of Bordj Bou Arréridj&apos;s IT Department (MI). Our goal? To inspire and unite future developers.
             </p>
           )}
           {window === "Achievements" && (
@@ -161,7 +161,7 @@ export default function Home() {
         <RetroContextMenu 
           x={contextMenuPosition.x} 
           y={contextMenuPosition.y}
-          onItemClick={(action) => {
+          onItemClick={() => {
             // Handle context menu actions
             closeContextMenu();
           }}

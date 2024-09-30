@@ -2,9 +2,7 @@ import React from 'react';
 import RetroButton from './RetroButton';
 
 const RetroForm: React.FC = () => {
-  const handleSubmit = (e: React.FormEvent) => {
 
-  };
 
   return (
     <form  className="flex flex-col gap-4">
