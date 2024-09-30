@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@iconify/react';
 import ClientTime from './ClientTime';
 import Image from 'next/image';
 interface RetroTaskbarProps {
