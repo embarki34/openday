@@ -119,7 +119,7 @@ export default function Home() {
       {isEventDay && <RetroTimer />}
       <RetroTaskbar 
         currentTime={currentTime.toLocaleTimeString()}
-        onStartClick={handleStartClick}
+        onStartClick={handleStartClick} 
         openWindows={openWindows}
         onWindowClick={toggleWindow}
       />
