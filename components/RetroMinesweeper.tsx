@@ -21,7 +21,7 @@ const RetroMinesweeper: React.FC = () => {
 
   useEffect(() => {
     initializeGrid();
-  }, []);  // We'll address this warning later
+  },);  // We'll address this warning later
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
