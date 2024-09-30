@@ -1,101 +1,149 @@
-import Image from "next/image";
+"use client"
+import { useState, useEffect } from "react";
+import RetroDesktop from "@/components/RetroDesktop";
+import RetroTaskbar from "@/components/RetroTaskbar";
+import RetroWindow from "@/components/RetroWindow";
+import RetroStartMenu from "@/components/RetroStartMenu";
+import RetroContextMenu from "@/components/RetroContextMenu";
+import RetroTimer from "@/components/RetroTimer";
+
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [openWindows, setOpenWindows] = useState<string[]>(["Open Day Announcement"]);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isEventDay, setIsEventDay] = useState(false);
+  const [openDayMessage, setOpenDayMessage] = useState("");
+  const [countdown, setCountdown] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+      const eventDate = new Date(2024, 9, 1, 10, 0, 0); // October 1, 2024, 10:00 AM
+      setIsEventDay(now.getFullYear() === 2024 && now.getMonth() === 9 && now.getDate() === 1);
+      
+      const timeDiff = eventDate.getTime() - now.getTime();
+      if (timeDiff > 0) {
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        setOpenDayMessage(`Open Day is on October 1, 2024 at 10:00 AM (${countdown} remaining)`);
+      } else if (timeDiff <= 0 && timeDiff > -24 * 60 * 60 * 1000) {
+        setOpenDayMessage("Open Day is today!");
+      } else {
+        setOpenDayMessage("Open Day has passed.");
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  const toggleWindow = (windowName: string) => {
+    setOpenWindows(prev => 
+      prev.includes(windowName) 
+        ? prev.filter(w => w !== windowName) 
+        : [...prev, windowName]
+    );
+  };
+
+  const handleStartClick = () => {
+    setIsStartMenuOpen(!isStartMenuOpen);
+    if (isEventDay) {
+      // Show welcome message on event day
+      alert("Welcome to Infiniti Club Open Day!");
+    }
+  };
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenuPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const closeContextMenu = () => {
+    setContextMenuPosition(null);
+  };
+
+  const desktopIcons = [
+    { name: "About Us", icon: "/msg_information-1.png" },
+    { name: "Achievements", icon: "/paint_old-0.png" },
+    { name: "Contact Us", icon: "/contact.png" },
+  ];
+
+  return (
+    <div 
+      className="bg-[#008080] min-h-screen font-[family-name:var(--font-ms-sans-serif)] relative overflow-hidden"
+      onContextMenu={handleContextMenu}
+      onClick={closeContextMenu}
+    >
+      <RetroDesktop icons={desktopIcons} onIconClick={toggleWindow} />
+      
+      {openWindows.map(window => (
+        <RetroWindow key={window} title={window} onClose={() => toggleWindow(window)}>
+          {window === "About Us" && (
+            <p className="text-[#000080]">
+              Infiniti Club was created by students for students in 2023 at the University of Bordj Bou Arréridj's IT Department (MI). Our goal? To inspire and unite future developers.
+            </p>
+          )}
+          {window === "Achievements" && (
+            <ul className="list-disc pl-5 text-[#008000]">
+              <li>Hacktivia Hackathon: 1st Place</li>
+              <li>Msila Hackathon: 2nd Place</li>
+              <li>National Developers Competition: 4th Place</li>
+              <li>AI Open Days: Hosted successful events</li>
+            </ul>
+          )}
+          {window === "Contact Us" && (
+            <form className="flex flex-col gap-2">
+              <input type="text" placeholder="Name" className="retro-input" />
+              <input type="email" placeholder="Email" className="retro-input" />
+              <textarea placeholder="Message" rows={4} className="retro-input" />
+              <button type="submit" className="retro-button">Send</button>
+            </form>
+          )}
+          {window === "AI Open Days" && (
+            <p className="text-[#000080]">
+              Join us for exciting AI-themed events and workshops!
+            </p>
+          )}
+          {window === "Open Day Announcement" && (
+            <p className="text-[#000080] text-2xl font-bold">
+              {openDayMessage}
+            </p>
+          )}
+        </RetroWindow>
+      ))}
+
+      {isEventDay && <RetroTimer />}
+      <RetroTaskbar 
+        currentTime={currentTime.toLocaleTimeString()}
+        onStartClick={handleStartClick}
+        openWindows={openWindows}
+        onWindowClick={toggleWindow}
+      />
+
+      {isStartMenuOpen && (
+        <RetroStartMenu 
+          onItemClick={(item) => {
+            toggleWindow(item);
+            setIsStartMenuOpen(false);
+          }}
+          onClose={() => setIsStartMenuOpen(false)}
+        />
+      )}
+
+      {contextMenuPosition && (
+        <RetroContextMenu 
+          x={contextMenuPosition.x} 
+          y={contextMenuPosition.y}
+          onItemClick={(action) => {
+            // Handle context menu actions
+            closeContextMenu();
+          }}
+        />
+      )}
     </div>
   );
 }
