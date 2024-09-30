@@ -8,7 +8,7 @@ interface RetroWindowProps {
 }
 
 const RetroWindow: React.FC<RetroWindowProps> = ({ title, children, onClose }) => {
-  const [size, setSize] = useState({ width: 400, height: 300 });
+  const [size, setSize] = useState({ width: 425, height: 550 });
   const [position, setPosition] = useState({ x: 100, y: 100 });
 
   return (
