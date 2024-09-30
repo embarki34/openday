@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 interface Cell {
@@ -21,7 +22,7 @@ const RetroMinesweeper: React.FC = () => {
 
   useEffect(() => {
     initializeGrid();
-  },);  // We'll address this warning later
+  },);  
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
